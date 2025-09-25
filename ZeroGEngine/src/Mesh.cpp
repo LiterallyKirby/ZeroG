@@ -1,6 +1,6 @@
 #include "Mesh.hpp"
 #include <iostream>
-
+#include "cmath"
 static void buildCube(std::vector<float>& v, std::vector<unsigned int>& i) {
     v = {
         // positions         // colors
@@ -41,9 +41,61 @@ static void buildPyramid(std::vector<float>& v, std::vector<unsigned int>& i) {
     };
 }
 
+
+static void buildSphere(std::vector<float>& v, std::vector<unsigned int>& i, int latBands = 16, int longBands = 16) {
+    v.clear();
+    i.clear();
+
+    for (int lat = 0; lat <= latBands; ++lat) {
+        float theta = lat * M_PI / latBands;
+        float sinTheta = sin(theta);
+        float cosTheta = cos(theta);
+
+        for (int lon = 0; lon <= longBands; ++lon) {
+            float phi = lon * 2 * M_PI / longBands;
+            float sinPhi = sin(phi);
+            float cosPhi = cos(phi);
+
+            float x = cosPhi * sinTheta;
+            float y = cosTheta;
+            float z = sinPhi * sinTheta;
+
+            // position + color
+            v.push_back(x * 0.5f); // scale to radius=0.5
+            v.push_back(y * 0.5f);
+            v.push_back(z * 0.5f);
+
+            v.push_back((float)lat / latBands); // R
+            v.push_back((float)lon / longBands); // G
+            v.push_back(1.0f); // B
+        }
+    }
+
+    for (int lat = 0; lat < latBands; ++lat) {
+        for (int lon = 0; lon < longBands; ++lon) {
+            int first = (lat * (longBands + 1)) + lon;
+            int second = first + longBands + 1;
+
+            i.push_back(first);
+            i.push_back(second);
+            i.push_back(first + 1);
+
+            i.push_back(second);
+            i.push_back(second + 1);
+            i.push_back(first + 1);
+        }
+    }
+}
+
+
+#include "Mesh.hpp"
+
+// helper builders (buildCube, buildPyramid, buildSphere)...
+
 Mesh::Mesh(MeshType t) : type(t) {
     if (type == MeshType::Cube) buildCube(vertices, indices);
-    else buildPyramid(vertices, indices);
+    else if (type == MeshType::Pyramid) buildPyramid(vertices, indices);
+    else if (type == MeshType::Sphere) buildSphere(vertices, indices);
 
     indexCount = static_cast<unsigned int>(indices.size());
 
@@ -54,10 +106,16 @@ Mesh::Mesh(MeshType t) : type(t) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices.size() * sizeof(float),
+                 vertices.data(),
+                 GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 indices.size() * sizeof(unsigned int),
+                 indices.data(),
+                 GL_STATIC_DRAW);
 
     // pos(3) color(3)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -75,6 +133,7 @@ Mesh::~Mesh() {
     if (VAO) glDeleteVertexArrays(1, &VAO);
 }
 
+// move ctor / move assign: make sure they use the same members
 Mesh::Mesh(Mesh&& o) noexcept {
     type = o.type;
     vertices = std::move(o.vertices);
@@ -97,3 +156,4 @@ Mesh& Mesh::operator=(Mesh&& o) noexcept {
     }
     return *this;
 }
+

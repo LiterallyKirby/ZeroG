@@ -17,8 +17,6 @@ using json = nlohmann::json;
 
 // Global physics system reference for entity creation
 PhysicsSystem *g_physicsSystem = nullptr;
-
-
 void LoadSceneFromJSON(const std::string &filename) {
   std::ifstream file(filename);
   if (!file.is_open()) {
@@ -72,19 +70,26 @@ void LoadSceneFromJSON(const std::string &filename) {
       EntityBuilder builder;
 
       // Mesh
-      std::string meshType = entityJson.value("mesh", "Cube");
-      if (meshType == "Cube") {
-        builder.WithMesh(MeshType::Cube);
-      } else if (meshType == "Pyramid") {
-        builder.WithMesh(MeshType::Pyramid);
-      }
+     
+// Mesh
+std::string meshType = entityJson.value("mesh", "Cube");
+if (meshType == "Cube") {
+    builder.WithMesh(MeshType::Cube);
+} else if (meshType == "Pyramid") {
+    builder.WithMesh(MeshType::Pyramid);
+} else if (meshType == "Sphere") {
+    builder.WithMesh(MeshType::Sphere); // Add this
+}
+
 
       // Position
-      auto pos = entityJson.value("position", std::vector<float>{0.0f, 0.0f, 0.0f});
+      auto pos =
+          entityJson.value("position", std::vector<float>{0.0f, 0.0f, 0.0f});
       builder.WithPosition(pos[0], pos[1], pos.size() > 2 ? pos[2] : 0.f);
 
       // Scale
-      auto scale = entityJson.value("scale", std::vector<float>{1.0f, 1.0f, 1.0f});
+      auto scale =
+          entityJson.value("scale", std::vector<float>{1.0f, 1.0f, 1.0f});
       builder.WithScale(scale[0], scale[1], scale.size() > 2 ? scale[2] : 1.f);
 
       // Tag
@@ -99,17 +104,16 @@ void LoadSceneFromJSON(const std::string &filename) {
         // Mass determines if static or dynamic
         float mass = physJson.value("mass", 1.0f);
         opts.mass = mass;
-        
+
         // CRITICAL FIX: If mass is 0, force static regardless of JSON
-        if (mass <= 0.0f) {
+        if (mass == 0.0f) {
           opts.isStatic = true;
-          opts.isKinematic = false;
-          std::cout << "Creating STATIC body for '" << tag << "' (mass = " << mass << ")" << std::endl;
+          std::cout << "Creating STATIC body for '" << tag << "' (mass = 0)"
+                    << std::endl;
         } else {
-          opts.isStatic = physJson.value("isStatic", false); // Allow JSON override for non-zero mass
-          opts.isKinematic = physJson.value("isKinematic", false);
-          std::cout << "Creating DYNAMIC body for '" << tag << "' (mass = " << mass 
-                    << ", isStatic=" << opts.isStatic << ", isKinematic=" << opts.isKinematic << ")" << std::endl;
+          opts.isStatic = false; // Force dynamic for non-zero mass
+          std::cout << "Creating DYNAMIC body for '" << tag
+                    << "' (mass = " << mass << ")" << std::endl;
         }
 
         // Friction/restitution
@@ -140,11 +144,13 @@ void LoadSceneFromJSON(const std::string &filename) {
             if (!dims.empty()) {
               opts.dimensions.x = dims[0]; // radius
             } else {
-              opts.dimensions.x = std::max({scale[0], scale[1], scale[2]}) * 0.5f;
+              opts.dimensions.x =
+                  std::max({scale[0], scale[1], scale[2]}) * 0.5f;
             }
           } else if (opts.shapeType == PhysicsOptions::ShapeType::CAPSULE) {
             if (dims.size() >= 2) {
-              opts.dimensions = glm::vec3(dims[0], dims[1], 0.0f); // radius, height
+              opts.dimensions =
+                  glm::vec3(dims[0], dims[1], 0.0f); // radius, height
             } else {
               opts.dimensions = glm::vec3(scale[0] * 0.5f, scale[1], 0.0f);
             }
@@ -160,17 +166,17 @@ void LoadSceneFromJSON(const std::string &filename) {
           }
         }
 
-        std::cout << "  Physics shape: " << shapeStr 
-                  << ", dimensions: (" << opts.dimensions.x 
-                  << ", " << opts.dimensions.y 
-                  << ", " << opts.dimensions.z << ")" << std::endl;
+        std::cout << "  Physics shape: " << shapeStr << ", dimensions: ("
+                  << opts.dimensions.x << ", " << opts.dimensions.y << ", "
+                  << opts.dimensions.z << ")" << std::endl;
 
         builder.WithPhysicsOptions(opts);
       }
 
       auto entityId = builder.Build();
       entityCount++;
-      std::cout << "Created entity '" << tag << "' with ID: " << entityId << std::endl;
+      std::cout << "Created entity '" << tag << "' with ID: " << entityId
+                << std::endl;
 
       // If entity has physics, add to our list for PhysX actor creation
       if (entityJson.contains("physics")) {
@@ -192,16 +198,19 @@ void LoadSceneFromJSON(const std::string &filename) {
         g_physicsSystem->CreatePhysXActor(tempEntity, *physicsComp);
 
         auto *transform = ECS::GetTransform(entityId);
-        auto *entity = ECS::GetEntity(entityId);
-        std::string entityTag = entity ? entity->tag : "Unknown";
-        
+        auto tag = ECS::GetTag(entityId); // Assuming you have this
+
+        std::string entityTag = !tag.empty() ? tag : "Unknown";
+
         if (transform) {
-          std::cout << "  ✓ Created PhysX actor for '" << entityTag << "' (ID: " << entityId
-                    << ") at position (" << transform->position.x << ", "
-                    << transform->position.y << ", " << transform->position.z
-                    << ") - " << (physicsComp->isStatic ? "STATIC" : "DYNAMIC") << std::endl;
+          std::cout << "  ✓ Created PhysX actor for '" << entityTag
+                    << "' (ID: " << entityId << ") at position ("
+                    << transform->position.x << ", " << transform->position.y
+                    << ", " << transform->position.z << ") - "
+                    << (physicsComp->isStatic ? "STATIC" : "DYNAMIC")
+                    << std::endl;
         }
-        
+
         // Verify actor was created
         if (g_physicsSystem->HasActor(entityId)) {
           std::cout << "    ✓ Actor successfully registered" << std::endl;
@@ -214,7 +223,6 @@ void LoadSceneFromJSON(const std::string &filename) {
 
   std::cout << "\nScene loading complete!" << std::endl;
 }
-
 int main() {
   if (!glfwInit()) {
     std::cerr << "GLFW init failed\n";

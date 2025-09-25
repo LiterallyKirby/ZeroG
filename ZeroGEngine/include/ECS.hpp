@@ -23,7 +23,7 @@ bool HasPhysics(EntityID id);
     void AddCamera(EntityID id, const CameraComponent& c);
     CameraComponent* GetCamera(EntityID id);
     bool HasCamera(EntityID id);
-
+void Clear();
     // iterate
     const std::unordered_map<EntityID, Entity>& GetAllEntities();
 

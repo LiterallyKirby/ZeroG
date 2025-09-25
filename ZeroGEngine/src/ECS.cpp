@@ -7,11 +7,13 @@ namespace {
 
 namespace ECS {
 
+
 EntityID CreateEntity(std::shared_ptr<Mesh> mesh, const std::string& tag) {
     EntityID id = nextEntityID++;
     entities[id] = Entity{id, mesh, tag};
     return id;
 }
+
 
 bool HasEntity(EntityID id) {
     return entities.find(id) != entities.end();
@@ -45,7 +47,10 @@ TransformComponent* GetTransform(EntityID id) {
     }
     return nullptr;
 }
-
+void Clear() {
+    entities.clear();
+    nextEntityID = 1;
+}
 bool HasTransform(EntityID id) {
     if (auto e = GetEntity(id)) {
         return true;

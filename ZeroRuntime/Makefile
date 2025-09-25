@@ -7,9 +7,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra \
            -I/usr/include/nlohmann \
            -Iinclude \
            -I/usr/local/PhysX/include \
-           -DNDEBUG \
-           -I/user/include  \
-           -I/user/local/PhysX/include
+           -DNDEBUG
 
 LDFLAGS = -fsanitize=address \
           -L../ZeroGEngine \
@@ -23,16 +21,16 @@ LDFLAGS = -fsanitize=address \
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_C = $(wildcard $(SRC_DIR)/*.c)
 SRC_CPP = $(wildcard $(SRC_DIR)/*.cpp)
+SRC_C   = $(wildcard $(SRC_DIR)/*.c)
 
-OBJ_C = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_C))
 OBJ_CPP = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
+OBJ_C   = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_C))
 
-OBJ = $(OBJ_C) $(OBJ_CPP)
+OBJ = $(OBJ_CPP) $(OBJ_C)
 
 runtime: $(OBJ)
-	$(CXX) $(CXXFLAGS) -o runtime $(OBJ) $(LDFLAGS)
+	$(CXX) $(OBJ) -o runtime $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
