@@ -1,0 +1,74 @@
+{
+  "camera": {
+    "position": [5.0, 4.0, 12.0],
+    "rotation": [-20.0, -25.0, 0.0],
+    "fov": 70.0
+  },
+  "entities": [
+    {
+      "mesh": "Cube",
+      "position": [0.0, -1.0, 0.0],
+      "scale": [12.0, 0.3, 12.0],
+      "tag": "Ground",
+      "physics": {
+        "mass": 0.0,
+        "shape": "box",
+        "staticFriction": 0.6,
+        "dynamicFriction": 0.6,
+        "restitution": 0.2
+      }
+    },
+    {
+      "mesh": "Cube",
+      "position": [-2.0, 6.0, -1.0],
+      "scale": [1.2, 1.2, 1.2],
+      "tag": "CubeA",
+      "physics": {
+        "mass": 1.2,
+        "shape": "box",
+        "staticFriction": 0.5,
+        "dynamicFriction": 0.4,
+        "restitution": 0.4
+      }
+    },
+    {
+      "mesh": "Cube",
+      "position": [1.5, 7.5, 0.5],
+      "scale": [0.8, 0.8, 0.8],
+      "tag": "CubeB",
+      "physics": {
+        "mass": 0.8,
+        "shape": "box",
+        "staticFriction": 0.3,
+        "dynamicFriction": 0.2,
+        "restitution": 0.6
+      }
+    },
+    {
+      "mesh": "Cube",
+      "position": [3.0, 5.0, -2.0],
+      "scale": [1.0, 2.0, 1.0],
+      "tag": "CubeC",
+      "physics": {
+        "mass": 1.5,
+        "shape": "box",
+        "staticFriction": 0.4,
+        "dynamicFriction": 0.5,
+        "restitution": 0.3
+      }
+    },
+    {
+      "mesh": "Cube",
+      "position": [0.0, 9.0, 2.0],
+      "scale": [1.5, 1.5, 1.5],
+      "tag": "CubeD",
+      "physics": {
+        "mass": 1.0,
+        "shape": "box",
+        "staticFriction": 0.2,
+        "dynamicFriction": 0.2,
+        "restitution": 0.9
+      }
+    }
+  ]
+}

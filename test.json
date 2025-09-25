@@ -1,0 +1,24 @@
+
+{
+  "entities": [
+    {
+      "mesh": "Cube",
+      "position": [0.0, -1.0, 0.0],
+      "scale": [5.0, 0.1, 5.0],
+      "tag": "Ground",
+      "physics": { "mass": 0.0 }
+    },
+    {
+      "mesh": "Cube",
+      "position": [-0.6, 2.0, 0.0],
+      "tag": "Cube",
+      "physics": { "mass": 1.0 }
+    },
+    {
+      "mesh": "Pyramid",
+      "position": [0.6, 2.0, 0.0],
+      "tag": "Pyramid",
+      "physics": { "mass": 1.0 }
+    }
+  ]
+}

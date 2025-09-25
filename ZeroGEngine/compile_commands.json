@@ -1,0 +1,40 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-I/usr/include/nlohmann",
+      "-I/usr/local/PhysX/include",
+      "-DNDEBUG",
+      "-c",
+      "-o",
+      "src/PhysicsSystem.o",
+      "src/PhysicsSystem.cpp"
+    ],
+    "directory": "/home/kirby/Programming/ZeroG/ZeroGEngine",
+    "file": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/PhysicsSystem.cpp",
+    "output": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/PhysicsSystem.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-I/usr/include/nlohmann",
+      "-I/usr/local/PhysX/include",
+      "-DNDEBUG",
+      "-c",
+      "-o",
+      "src/glad.o",
+      "src/glad.c"
+    ],
+    "directory": "/home/kirby/Programming/ZeroG/ZeroGEngine",
+    "file": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/glad.c",
+    "output": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/glad.o"
+  }
+]
