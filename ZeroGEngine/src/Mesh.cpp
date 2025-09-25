@@ -88,7 +88,7 @@ static void buildSphere(std::vector<float>& v, std::vector<unsigned int>& i, int
 }
 
 
-#include "Mesh.hpp"
+
 
 // helper builders (buildCube, buildPyramid, buildSphere)...
 

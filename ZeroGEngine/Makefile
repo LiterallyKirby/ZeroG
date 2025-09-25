@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude -I/usr/include/nlohmann -I/usr/local/PhysX/include -DNDEBUG
 
-CPP_SRC = src/ECS.cpp src/Entity.cpp src/Mesh.cpp src/PhysicsSystem.cpp src/RenderSystem.cpp src/Scene.cpp
+CPP_SRC = src/ECS.cpp src/Entity.cpp src/Mesh.cpp src/PhysicsSystem.cpp src/RenderSystem.cpp src/Scene.cpp src/TextureComponent.cpp
 C_SRC = src/glad.c
 OBJ = $(CPP_SRC:.cpp=.o) $(C_SRC:.c=.o)
 

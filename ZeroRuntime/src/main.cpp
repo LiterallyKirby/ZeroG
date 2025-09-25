@@ -131,6 +131,10 @@ if (meshType == "Cube") {
           opts.shapeType = PhysicsOptions::ShapeType::CAPSULE;
         }
 
+if (entityJson.contains("texture")) {
+    std::string texturePath = entityJson["texture"];
+    builder.WithTexture(texturePath);
+}
         // Dimensions - CRITICAL FIX
         if (physJson.contains("dimensions")) {
           auto dims = physJson["dimensions"].get<std::vector<float>>();

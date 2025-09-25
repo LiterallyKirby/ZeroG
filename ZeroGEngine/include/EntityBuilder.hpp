@@ -7,7 +7,7 @@
 #include "TransformComponent.hpp"
 #include <memory>
 #include <optional>
-
+#include <TextureComponent.hpp>
 class EntityBuilder {
 
   std::optional<MeshType>
@@ -44,6 +44,10 @@ public:
     return *this;
   }
 
+EntityBuilder& EntityBuilder::WithTexture(const std::string& texturePath) {
+    ECS::AddComponent<TextureComponent>(entityId, TextureComponent(texturePath));
+    return *this;
+}
   // NEW: set physics creation options (convenience)
   EntityBuilder &WithPhysicsOptions(const PhysicsOptions &opts) {
     PhysicsComponent p;

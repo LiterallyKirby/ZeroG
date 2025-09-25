@@ -11,11 +11,11 @@
       "-DNDEBUG",
       "-c",
       "-o",
-      "src/Mesh.o",
-      "src/Mesh.cpp"
+      "src/TextureComponent.o",
+      "src/TextureComponent.cpp"
     ],
     "directory": "/home/kirby/Programming/ZeroG/ZeroGEngine",
-    "file": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/Mesh.cpp",
-    "output": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/Mesh.o"
+    "file": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/TextureComponent.cpp",
+    "output": "/home/kirby/Programming/ZeroG/ZeroGEngine/src/TextureComponent.o"
   }
 ]

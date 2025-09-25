@@ -28,8 +28,14 @@ std::shared_ptr<CameraComponent> camera; // optional camera storage
 
     Entity(EntityID id_, std::shared_ptr<Mesh> m, const std::string& t = "")
         : id(id_), tag(t), mesh(std::move(m)) {}
-
+  Entity& operator=(Entity&& other) noexcept {
+        if (this != &other) {
+            mesh = std::move(other.mesh);
+            tag = std::move(other.tag);
+        }
+        return *this;
+    }
     Entity(Entity&& other) noexcept = default;
-    Entity& operator=(Entity&& other) noexcept = default;
+
     ~Entity() = default;
 };
